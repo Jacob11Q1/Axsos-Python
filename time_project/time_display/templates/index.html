@@ -1,0 +1,16 @@
+{% load static %} <!-- Load the static template tag library -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Display Project</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>The current Time and Date:</h1>
+        <p>{{ time }}</p> <!-- Display the time passed from views.py -->
+    </div>
+</body>
+</html>
