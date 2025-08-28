@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great Number Game</title>
+
+    <!-- External Style -->
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box{
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            align-items: center;
+            box-shadow: 0 6px 17px rgba(0,0,0,0.2);
+            width: 400px;
+        }
+
+        h1{
+            color: #333;
+        }
+
+        /* Feedback message styling */
+        .message{
+            margin: 15px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        input[type="number"]{
+            padding: 10px;
+            width: 80%;
+            margin: 10px 0;
+            border: 1px solid #aaa;
+            border-radius: 10px;
+        }
+
+        button{
+            padding: 10px 20px;
+            background: #007bff;
+            border: 1.5px solid black;
+            border-radius: 8px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            
+        }
+
+        button:hover{
+            background: #0056b3;
+        }
+
+        .reset{
+            background: #28a745;
+            margin-top: 10px;
+        }
+
+        .reset:hover{
+            background: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="box">
+        <h1>Welcome to the Great Number Game!</h1>
+        <p>i'm thinking if a number between 1 and 100</p>
+        <p>Take a guess!</p>
+        
+        <!-- Displaying the feedback message from the session -->
+        <div class="message" style="color: {{ request.session.color }}">
+            {{ request.session.message }}
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 15px; align-items: center; gap: 10px;">
+            <!-- Form for submitting the guess -->
+            <form action="{% url 'guess' %}" method="POST" style="display: flex; align-items: center; gap: 10px;">
+                <!-- For Security reasons required in Django forms -->
+                {% csrf_token %} 
+                <input type="number" name="guess" placeholder="Enter your guess" required>
+                <button type="submit">Submit</button>
+            </form>
+
+            <!-- The reset button for the game -->
+            <form action="{% url 'reset' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="reset">Play Again</button>
+            </form>
+        </div>
+        
+    </div>
+</body>
+</html>
