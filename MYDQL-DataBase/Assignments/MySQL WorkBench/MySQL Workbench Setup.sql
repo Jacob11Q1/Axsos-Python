@@ -1,0 +1,29 @@
+USE test_db;
+
+-- Remove the old users table
+DROP TABLE IF EXISTS users;
+
+-- Create the correct users table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(100)
+);
+
+-- Insert sample data
+INSERT INTO users (first_name, last_name, email)
+VALUES ('John', 'Doe', 'john.doe@example.com'),
+       ('Jane', 'Smith', 'jane.smith@example.com');
+
+-- See the table contents
+SELECT * FROM users;
+
+-- Update a record
+UPDATE users
+SET email = 'john.newemail@example.com'
+WHERE id = 1;
+
+-- Delete a record
+DELETE FROM users
+WHERE id = 2;
