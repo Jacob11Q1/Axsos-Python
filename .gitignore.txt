@@ -1,0 +1,9 @@
+# Ignore inner git repos
+DJango-Stack/.git
+Axsos---Python/.git
+
+# Ignore IDE and system files
+Assignments/.idea/
+*.log
+*.pyc
+__pycache__/

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo Fruit Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Dojo Fruit Store</h1>
+        <form action="/checkout" method="POST">
+            <label for="customer_name">Customer Name:</label>
+            <input type="text" name="customer_name" id="customer_name" required><br><br>
+
+            {% for fruit in fruits %}
+                <div class="fruit-card">
+                    <img src="{{ url_for('static', filename='images/' + fruit.image) }}" alt="{{ fruit.name }}" width="150">
+                    <p>{{ fruit.name }} - ${{ fruit.price }}</p>
+                    <input type="number" name="{{ fruit.name }}" value="0" min="0">
+                </div>
+            {% endfor %}
+
+            <button type="submit">Checkout</button>
+        </form>
+    </div>
+</body>
+</html>

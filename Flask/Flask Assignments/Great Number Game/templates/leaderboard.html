@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Leaderboard</h1>
+        {% if leaderboard %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Attempts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in leaderboard %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ player.name }}</td>
+                        <td>{{ player.attempts }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No winners yet.</p>
+        {% endif %}
+        <a href="/" class="btn">Play Again</a>
+    </div>
+</body>
+</html>
