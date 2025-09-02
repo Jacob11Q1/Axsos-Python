@@ -1,0 +1,72 @@
+/* Reset default margins/padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Page styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: antiquewhite;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Container box */
+.container {
+    width: 300px;
+    padding: 25px;
+    border: 2px solid black;
+    border-radius: 15px;
+    text-align: center;
+    background-color: white;
+}
+
+/* Counter title */
+h1 {
+    margin-bottom: 20px;
+}
+
+/* Button-style links */
+a {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+/* Default buttons */
+a[href="/"], a[href="/add2"] {
+    background-color: #4CAF50;
+    color: white;
+}
+
+a[href="/"]:hover, a[href="/add2"]:hover {
+    background-color: #45a049;
+}
+
+/* Reset button */
+.reset-btn {
+    background-color: #ff9800;
+    color: white;
+}
+
+.reset-btn:hover {
+    background-color: #e68a00;
+}
+
+/* Destroy Session button */
+.destroy-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.destroy-btn:hover {
+    background-color: #d32f2f;
+}

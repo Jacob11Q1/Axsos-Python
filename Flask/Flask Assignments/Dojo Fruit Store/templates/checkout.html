@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Checkout</h1>
+        <p>Thank you, {{ customer_name }}!</p>
+        <h2>Order Summary:</h2>
+        <ul>
+            {% for fruit, count in fruit_counts.items() %}
+                {% if count > 0 %}
+                    <li>{{ fruit }}: {{ count }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <p><strong>Total Cost: ${{ total_cost }}</strong></p>
+        <a href="/" class="btn">Back to Store</a>
+    </div>
+</body>
+</html>

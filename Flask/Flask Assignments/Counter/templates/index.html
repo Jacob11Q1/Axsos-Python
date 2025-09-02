@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Counter: {{ count }}</h1>
+        <a href="/">+1</a>
+        <a href="/add2">+2</a>
+        <a href="/reset" class="reset-btn">Reset</a>
+        <a href="/destroy_session" class="destroy-btn">Destroy Session</a>
+    </div>
+</body>
+</html>

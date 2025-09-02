@@ -1,0 +1,62 @@
+/* Center the form and results on the page */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+/* Shared container styles for form and results */
+form, .result-container {
+    border: 2px solid black;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label styling */
+label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Input and textarea styling */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Submit and Back button container */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+}
+
+/* Submit and Back button styling */
+input[type="submit"], .btn {
+    border: 2px solid black;
+    background: #76a5af;
+    box-shadow: 2px 3px black;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+input[type="submit"]:hover, .btn:hover {
+    background: #5b8b93;
+}

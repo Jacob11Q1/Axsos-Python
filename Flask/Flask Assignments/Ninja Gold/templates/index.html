@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Gold</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Ninja Gold Game</h1>
+        <h2>Current Gold: {{ gold }}</h2>
+
+        <div class="buildings">
+            {% for building in ["farm","cave","house","casino"] %}
+                <form action="/process_money" method="post">
+                    <input type="hidden" name="building" value="{{ building }}">
+                    <button type="submit">Go to {{ building.title() }}!</button>
+                </form>
+            {% endfor %}
+        </div>
+
+        {% if activities %}
+            <h3>Activities:</h3>
+            <ul>
+                {% for activity in activities %}
+                    <li style="color: {{ activity.color }};">{{ activity.message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if game_over %}
+            <a href="/reset" class="btn">Reset Game</a>
+        {% endif %}
+    </div>
+</body>
+</html>

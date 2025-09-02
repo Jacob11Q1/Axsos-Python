@@ -1,0 +1,18 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.checker_board{
+    display: flex;
+    margin: 30px auto;
+    flex-direction: column;
+    width: fit-content;
+    border: solid black;
+}
+.row{
+    display: flex;
+}
+.box{
+    width: 50px;
+    height: 50px;
+}

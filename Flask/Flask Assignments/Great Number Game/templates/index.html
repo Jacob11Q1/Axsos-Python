@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great Number Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Great Number Game</h1>
+        <p class="instructions">Guess a number between 1 and 100</p>
+        <p class="attempt">Attempt: {{ attempts }}/5</p>
+
+        {% if status == "low" %}
+            <div class="message low">Too Low!</div>
+        {% elif status == "high" %}
+            <div class="message high">Too High!</div>
+        {% elif status == "correct" %}
+            <div class="message correct">You got it in {{ attempts }} attempts!</div>
+            <form action="/save_winner" method="POST">
+                <input type="text" name="name" placeholder="Enter your name" required>
+                <button type="submit">Save Score</button>
+            </form>
+            <a href="/reset" class="btn">Play Again</a>
+        {% elif status == "lose" %}
+            <div class="message lose">You Lose! The number was {{ session['number'] }}.</div>
+            <a href="/reset" class="btn">Try Again</a>
+        {% elif status == "invalid" %}
+            <div class="message invalid">Please enter a valid number!</div>
+        {% endif %}
+
+        {% if status != "correct" and status != "lose" %}
+        <form action="/guess" method="POST" class="button-group">
+            <input type="number" name="guess" placeholder="Enter guess" min="1" required autofocus>
+            <button type="submit">{% if status == "" %}Guess{% else %}Guess Again{% endif %}</button>
+            <a href="/leaderboard" class="btn">View Leaderboard</a>
+        </form>
+        {% endif %}
+    </div>
+</body>
+</html>

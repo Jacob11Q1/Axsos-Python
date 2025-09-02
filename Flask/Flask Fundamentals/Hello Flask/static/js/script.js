@@ -1,0 +1,1 @@
+console.log("Static JS File loaded successfully!")
