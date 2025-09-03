@@ -1,0 +1,65 @@
+from dojo_ninjas_app.models import Dojo, Ninja
+
+
+# ------------------------------
+# 1. Create 3 new dojos
+# ------------------------------
+>>> dojo1 = Dojo.objects.create(name="South Dojo", city="Texas", state="TX")
+>>> dojo2 = Dojo.objects.create(name="East Dojo", city="Tokyo", state="TK")
+>>> dojo3 = Dojo.objects.create(name="West Dojo", city="Washinton", state="WD")
+
+# ------------------------------
+# 2. Delete the 3 dojos
+# ------------------------------
+dojo1.delete()
+dojo2.delete()
+dojo3.delete()
+
+# ------------------------------
+# 3. Create 3 more dojos
+# ------------------------------
+dojo1 = Dojo.objects.create(name="East Dojo", city="Tokyo", state="TK")
+dojo2 = Dojo.objects.create(name="West Dojo", city="Osaka", state="OS")
+dojo3 = Dojo.objects.create(name="North Dojo", city="Kyoto", state="KT")
+
+# ------------------------------
+# 4. Create 3 ninjas for each dojo
+# ------------------------------
+# First Dojo
+Ninja.objects.create(first_name="Naruto", last_name="Uzumaki", dojo=dojo1)
+Ninja.objects.create(first_name="Sasuke", last_name="Uchiha", dojo=dojo1)
+Ninja.objects.create(first_name="Sakura", last_name="Haruno", dojo=dojo1)
+
+# Second dojo
+Ninja.objects.create(first_name="Kakashi", last_name="Hatake", dojo=dojo2)
+Ninja.objects.create(first_name="Guy", last_name="Might", dojo=dojo2)
+Ninja.objects.create(first_name="Neji", last_name="Hyuga", dojo=dojo2)
+
+# Third dojo
+Ninja.objects.create(first_name="Shikamaru", last_name="Nara", dojo=dojo3)
+Ninja.objects.create(first_name="Choji", last_name="Akimichi", dojo=dojo3)
+Ninja.objects.create(first_name="Ino", last_name="Yamanaka", dojo=dojo3)
+
+# ------------------------------
+# 5. Retrieve all ninjas from first dojo
+# ------------------------------
+ninjas_dojo1 = dojo1.ninjas.all()
+print(ninjas_dojo1)
+
+# ------------------------------
+# 6. Retrieve all ninjas from last dojo
+# ------------------------------
+ninjas_dojo3 = dojo3.ninjas.all()
+print(ninjas_dojo3)
+
+# ------------------------------
+# 7. Retrieve last ninja's dojo
+# ------------------------------
+last_ninja_dojo = Ninja.objects.last().dojo
+print(last_ninja_dojo)
+
+# ------------------------------
+# 8. Add a new dojo (desc field already exists)
+# ------------------------------
+new_dojo = Dojo.objects.create(name="South Dojo", city="Nagoya", state="NG", desc="New dojo")
+print(new_dojo)
