@@ -1,0 +1,69 @@
+# ================================
+# Django Shell Queries for Books/Authors Assignment
+# ================================
+
+# --- Step 1: Create 5 books with description ---
+Book.objects.create(name="C Sharp", description="Programming language by Microsoft")
+Book.objects.create(name="Java", description="Popular programming language")
+Book.objects.create(name="Python", description="High-level programming language")
+Book.objects.create(name="PHP", description="Server-side scripting language")
+Book.objects.create(name="Ruby", description="Dynamic programming language")
+
+# --- Step 2: Create 5 authors ---
+Author.objects.create(first_name="Jane", last_name="Austen")
+Author.objects.create(first_name="Emily", last_name="Dickinson")
+Author.objects.create(first_name="Fyodor", last_name="Dostoevsky")
+Author.objects.create(first_name="William", last_name="Shakespeare")
+Author.objects.create(first_name="Lau", last_name="Tzu")
+
+
+
+# --- Step 4: Update book name ---
+book = Book.objects.get(name="C Sharp")
+book.name = "C#"
+book.save()
+
+# --- Step 5: Update 4th author's first name to Bill ---
+author = Author.objects.get(id=4)
+author.first_name = "Bill"
+author.save()
+
+# --- Step 6: Assign authors to books ---
+author1 = Author.objects.get(id=1)
+author2 = Author.objects.get(id=2)
+author3 = Author.objects.get(id=3)
+author4 = Author.objects.get(id=4)
+author5 = Author.objects.get(id=5)
+
+book1 = Book.objects.get(id=1)
+book2 = Book.objects.get(id=2)
+book3 = Book.objects.get(id=3)
+book4 = Book.objects.get(id=4)
+book5 = Book.objects.get(id=5)
+
+# First author -> first 2 books
+author1.books.add(book1, book2)
+
+# Second author -> first 3 books
+author2.books.add(book1, book2, book3)
+
+# Third author -> first 4 books
+author3.books.add(book1, book2, book3, book4)
+
+# Fourth author -> all 5 books
+author4.books.add(book1, book2, book3, book4, book5)
+
+# --- Step 7: Retrieve all authors for 3rd book ---
+book3.authors.all()
+
+# --- Step 8: Remove the first author of 3rd book ---
+book3.authors.remove(author1)
+
+# --- Step 9: Add the 5th author to 2nd book ---
+book2.authors.add(author5)
+
+# --- Step 10: Find all books that the 3rd author is part of ---
+author3.books.all()
+
+# --- Step 11: Find all authors that contributed to the 5th book ---
+book5.authors.all()
