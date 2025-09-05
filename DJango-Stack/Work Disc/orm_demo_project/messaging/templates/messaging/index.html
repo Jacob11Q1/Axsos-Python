@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Clone - MessagingApp</title>
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+        }
+
+        .feed {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .stories {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .story {
+            flex: 0 0 auto;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid #ff8501;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1rem;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .story:hover {
+            transform: scale(1.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #6c757d;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .message-text {
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .comment {
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comment-author {
+            font-weight: 600;
+        }
+
+        .timestamp {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        .like-btn,
+        .comment-btn,
+        .share-btn {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .like-btn:hover,
+        .comment-btn:hover,
+        .share-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .comment-input {
+            border-radius: 50px;
+        }
+
+        .btn-round {
+            border-radius: 50px;
+        }
+
+        .dark-mode {
+            background-color: #18191a;
+            color: #e4e6eb;
+        }
+
+        .dark-mode .card {
+            background-color: #242526;
+            color: #e4e6eb;
+        }
+
+        .dark-mode .form-control {
+            background-color: #3a3b3c;
+            color: #e4e6eb;
+            border: none;
+        }
+
+        .stories::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .stories::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light px-4">
+        <a class="navbar-brand" href="#">MessagingApp</a>
+        <div class="ms-auto">
+            <button id="darkModeToggle" class="btn btn-outline-secondary btn-sm">Toggle Dark Mode</button>
+        </div>
+    </nav>
+
+    <!-- Feed -->
+    <div class="container feed">
+
+        <!-- Stories Carousel -->
+        <div class="stories">
+            {% for user in users %}
+            <div class="story" title="{{ user.first_name }}">
+                {{ user.first_name|slice:":1" }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Messages Feed -->
+        <div id="messagesFeed">
+            {% for msg in messages %}
+            <div class="card" data-msg-id="{{ msg.id }}">
+                <div class="card-header">
+                    <div class="avatar">{{ msg.user.first_name|slice:":1" }}</div>
+                    <div>
+                        <strong>{{ msg.user.first_name }} {{ msg.user.last_name }}</strong><br>
+                        <span class="timestamp">{{ msg.created_at|date:"M d, Y H:i" }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="message-text">{{ msg.message }}</p>
+                    {% if msg.image %}
+                    <img src="{{ msg.image.url }}" class="img-fluid rounded" alt="Post image">
+                    {% endif %}
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fas fa-heart like-btn me-3" onclick="likePost({{ msg.id }})"></i>
+                        <i class="fas fa-comment comment-btn me-3" onclick="focusComment({{ msg.id }})"></i>
+                        <i class="fas fa-share share-btn"></i>
+                    </div>
+                    <span class="timestamp">{{ msg.created_at|date:"M d, Y H:i" }}</span>
+                </div>
+
+                <!-- Comments Section -->
+                <ul class="list-group list-group-flush">
+                    {% for comment in msg.comments.all %}
+                    <li class="list-group-item comment">
+                        <span>
+                            <strong class="comment-author">{{ comment.user.first_name }}:</strong> {{ comment.comment }}
+                        </span>
+                        <span class="timestamp">{{ comment.created_at|date:"M d, Y H:i" }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted">No comments yet.</li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Add Comment Form -->
+                <form class="mt-2 d-flex" onsubmit="addComment(event, {{ msg.id }})">
+                    <input type="text" class="form-control comment-input me-2" id="commentInput{{ msg.id }}"
+                        placeholder="Add a comment...">
+                    <button class="btn btn-primary btn-round">Post</button>
+                </form>
+            </div>
+            {% empty %}
+            <p class="text-muted">No messages yet.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Add Message Form -->
+        <div class="card p-3">
+            <h5>Add a New Post</h5>
+            <form id="addMessageForm" enctype="multipart/form-data" onsubmit="addMessage(event)">
+                <textarea class="form-control mb-2" name="message" rows="3"
+                    placeholder="Write your message here..."></textarea>
+                <input type="file" class="form-control mb-2" name="image">
+                <button type="submit" class="btn btn-success btn-round mt-2">Send Post</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Dark mode toggle
+        const toggleBtn = document.getElementById('darkModeToggle');
+        toggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Focus comment input
+        function focusComment(msgId) {
+            document.getElementById('commentInput' + msgId).focus();
+        }
+
+        // AJAX: Add comment
+        function addComment(e, msgId) {
+            e.preventDefault();
+            const input = document.getElementById('commentInput' + msgId);
+            const value = input.value;
+            if (!value.trim()) return;
+
+            fetch(`/add_comment/${msgId}/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/json' },
+                body: JSON.stringify({ comment: value })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const ul = document.querySelector(`[data-msg-id='${msgId}'] .list-group`);
+                        const li = document.createElement('li');
+                        li.className = 'list-group-item comment';
+                        li.innerHTML = `<span><strong class="comment-author">${data.user}:</strong> ${data.comment}</span><span class="timestamp">${data.created_at}</span>`;
+                        ul.appendChild(li);
+                        input.value = '';
+                    }
+                });
+        }
+
+        // AJAX: Add new post
+        function addMessage(e) {
+            e.preventDefault();
+            const form = document.getElementById('addMessageForm');
+            const formData = new FormData(form);
+
+            fetch(`/add_post/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // reload page or append post dynamically
+                        location.reload();
+                    }
+                });
+        }
+
+        // AJAX: Like post (just toggling for demo)
+        function likePost(msgId) {
+            fetch(`/like_post/${msgId}/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+            }).then(res => res.json()).then(data => {
+                if (data.success) alert('Liked!');
+            });
+        }
+    </script>
+
+</body>
+</html>
