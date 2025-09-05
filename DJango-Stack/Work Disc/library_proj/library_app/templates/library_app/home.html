@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Library</h1>
+        <div class="text-center mb-4">
+            <a href="{% url 'add_book' %}" class="btn btn-primary">Add New Book</a>
+            <a href="{% url 'add_author' %}" class="btn btn-primary text-white">Add New Author</a> <!-- new -->
+        </div>
+
+
+
+        <div class="row">
+            {% for book in books %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">{{ book.description|truncatechars:100 }}</p>
+                        <p class="card-text"><strong>Authors:</strong>
+                            {% for author in book.authors.all %}
+                            {{ author.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{% url 'book_detail' book.id %}" class="btn btn-primary btn-sm">Details</a>
+                            <a href="{% url 'edit_book' book.id %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'delete_book' book.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center">No books found. Add some!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
