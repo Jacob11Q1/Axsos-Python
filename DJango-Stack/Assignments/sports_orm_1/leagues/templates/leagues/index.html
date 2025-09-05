@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sports Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background: #0d1117;
+            color: #f0f0f0;
+        }
+
+        h1 {
+            color: #00d1b2;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .card {
+            background: #161b22;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-header button {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f0f0f0;
+        }
+
+        .card-header button:hover {
+            color: #00d1b2;
+        }
+
+        .badge {
+            font-size: 0.9rem;
+        }
+
+        canvas {
+            background: #0d1117;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Sports Dashboard</h1>
+
+        <div class="accordion card-grid" id="accordionContainer">
+            {% for title, queryset in querysets %}
+            <div class="card shadow-sm">
+                <div class="card-header" id="heading{{ forloop.counter }}">
+                    <button class="btn w-100 d-flex justify-content-between align-items-center text-start" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false"
+                        aria-controls="collapse{{ forloop.counter }}">
+                        {{ title }}
+                        <span class="badge bg-warning text-dark">{{ queryset.count }}</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div id="collapse{{ forloop.counter }}" class="collapse" data-bs-parent="#accordionContainer">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush mb-3">
+                            {% for item in queryset %}
+                            <li class="list-group-item bg-dark text-light border-0">
+                                {% if item.team_name %}
+                                    {{ item.team_name }}{% if item.location %} ({{ item.location }}){% endif %}
+                                {% elif item.name %}
+                                    {{ item.name }}{% if item.sport %} - {{ item.sport }}{% endif %}
+                                {% elif item.first_name %}
+                                    {{ item.first_name }} {{ item.last_name }}
+                                {% else %}
+                                    Unknown
+                                {% endif %}
+                            </li>
+                            {% empty %}
+                            <li class="list-group-item bg-dark text-muted border-0">No results</li>
+                            {% endfor %}
+                        </ul>
+                        <canvas id="chart{{ forloop.counter }}" height="120"></canvas>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            {% for title, queryset in querysets %}
+            const ctx{{ forloop.counter }} = document.getElementById('chart{{ forloop.counter }}').getContext('2d');
+
+            const labels{{ forloop.counter }} = [
+                {% for item in queryset %}
+                    {% if item.team_name %}
+                        "{{ item.team_name }}"
+                    {% elif item.name %}
+                        "{{ item.name }}"
+                    {% elif item.first_name %}
+                        "{{ item.first_name }} {{ item.last_name }}"
+                    {% else %}
+                        "Unknown"
+                    {% endif %}
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            ];
+
+            const data{{ forloop.counter }} = [
+                {% for item in queryset %}
+                    {{ forloop.counter0|add:"5" }}
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            ];
+
+            new Chart(ctx{{ forloop.counter }}, {
+                type: 'bar',
+                data: {
+                    labels: labels{{ forloop.counter }},
+                    datasets: [{
+                        label: 'Stats',
+                        data: data{{ forloop.counter }},
+                        backgroundColor: 'rgba(0, 209, 178, 0.7)',
+                        borderColor: 'rgba(0, 209, 178, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.1)' } },
+                        x: { grid: { color: 'rgba(255,255,255,0.1)' } }
+                    }
+                }
+            });
+            {% endfor %}
+        });
+    </script>
+</body>
+</html>
