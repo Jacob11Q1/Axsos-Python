@@ -1,0 +1,33 @@
+{% extends 'shows/base.html' %}
+{% block content %}
+<h1 class="mb-4">All TV Shows</h1>
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Title</th>
+            <th>Network</th>
+            <th>Release Date</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for show in shows %}
+        <tr>
+            <td>{{ show.title }}</td>
+            <td>{{ show.network }}</td>
+            <td>{{ show.release_date }}</td>
+            <td>{{ show.description|default:"-" }}</td>
+            <td>
+                <a href="{% url 'shows:edit_show' show.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{% url 'shows:delete_show' show.id %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">No shows available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "shows/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4 mb-4">
+            <h2 class="card-title">{{ show.name }}</h2>
+            <p class="card-text">{{ show.desc }}</p>
+            <p><strong>Network:</strong> {{ show.network }}</p>
+            <p><strong>Release Date:</strong> {{ show.release_date }}</p>
+            <a href="{% url 'shows:shows_list' %}" class="btn btn-primary mt-2">Back to All Shows</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

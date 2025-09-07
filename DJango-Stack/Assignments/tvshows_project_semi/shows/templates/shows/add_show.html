@@ -1,0 +1,24 @@
+{% extends 'shows/base.html' %}
+{% block content %}
+<h1 class="mb-4">Add TV Show</h1>
+<form method="POST" class="mb-3">
+    {% csrf_token %}
+    <div class="mb-3">
+        {{ form.title.label_tag }} {{ form.title }}
+        {% for error in form.title.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+    </div>
+    <div class="mb-3">
+        {{ form.network.label_tag }} {{ form.network }}
+        {% for error in form.network.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+    </div>
+    <div class="mb-3">
+        {{ form.release_date.label_tag }} {{ form.release_date }}
+        {% for error in form.release_date.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+    </div>
+    <div class="mb-3">
+        {{ form.description.label_tag }} {{ form.description }}
+        {% for error in form.description.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+    </div>
+    <button type="submit" class="btn btn-success">Add Show</button>
+</form>
+{% endblock %}
