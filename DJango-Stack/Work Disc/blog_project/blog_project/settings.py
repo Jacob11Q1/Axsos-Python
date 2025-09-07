@@ -75,8 +75,28 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # tells Django to use Postgres
+        'NAME': 'myprojectdb',                     # your Postgres DB name
+        'USER': 'myprojectuser',                   # your Postgres DB user
+        'PASSWORD': 'StrongPass123',               # the password you created
+        'HOST': '127.0.0.1',                       # localhost
+        'PORT': '5432',                             # default Postgres port
+        'OPTIONS': {'sslmode': 'disable'},          # no SSL needed for local dev
+    }
+}
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'myprojectdb',
+        'USER': 'myprojectuser',
+        'PASSWORD': 'yourpassword',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
     }
 }
 
