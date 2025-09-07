@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Blog, Comment, Admin
 
-# Display all blogs + form to create blog + comments
+# ----------------- Blog List -----------------
 def index(request):
     blogs = Blog.objects.all()
     return render(request, 'blogs/index.html', {'blogs': blogs})
 
-# Create a new blog
-def create(request):
+# ----------------- Blog Create -----------------
+def create_blog(request):
     if request.method == "POST":
         errors = Blog.objects.basic_validator(request.POST)
         if errors:
@@ -20,50 +20,72 @@ def create(request):
             desc=request.POST['desc']
         )
         messages.success(request, "Blog successfully created")
-        return redirect('/blogs')
+    return redirect('/blogs')
 
-# Edit blog page
-def edit(request, id):
+# ----------------- Blog Edit Form -----------------
+def edit_blog(request, id):
     blog = Blog.objects.get(id=id)
     return render(request, 'blogs/edit.html', {'blog': blog})
 
-# Update blog
-def update(request, id):
+# ----------------- Blog Update -----------------
+def update_blog(request, id):
+    errors = Blog.objects.basic_validator(request.POST)
+    if errors:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect(f'/blogs/edit/{id}')
+    blog = Blog.objects.get(id=id)
+    blog.name = request.POST['name']
+    blog.desc = request.POST['desc']
+    blog.save()
+    messages.success(request, "Blog successfully updated")
+    return redirect('/blogs')
+
+# ----------------- Blog Delete -----------------
+def delete_blog(request, id):
+    blog = Blog.objects.get(id=id)
+    blog.delete()
+    messages.success(request, "Blog successfully deleted")
+    return redirect('/blogs')
+
+# ----------------- Comment Create -----------------
+def create_comment(request, blog_id):
+    if request.method == "POST":
+        Comment.objects.create(
+            comment=request.POST['comment'],
+            blog=Blog.objects.get(id=blog_id)
+        )
+        messages.success(request, "Comment successfully added")
+    return redirect('/blogs')
+
+# ----------------- Comment Delete -----------------
+def delete_comment(request, comment_id):
+    comment = Comment.objects.get(id=comment_id)
+    comment.delete()
+    messages.success(request, "Comment successfully deleted")
+    return redirect('/blogs')
+
+# ----------------- Admin Create -----------------
+def create_admin(request):
     if request.method == "POST":
         errors = Blog.objects.basic_validator(request.POST)
         if errors:
             for key, value in errors.items():
                 messages.error(request, value)
-            return redirect(f'/blogs/edit/{id}')
-        blog = Blog.objects.get(id=id)
-        blog.name = request.POST['name']
-        blog.desc = request.POST['desc']
-        blog.save()
-        messages.success(request, "Blog successfully updated")
-        return redirect('/blogs')
+            return redirect('/admins/new')
+        admin = Admin.objects.create(
+            first_name=request.POST['first_name'],
+            last_name=request.POST['last_name'],
+            email=request.POST['email']
+        )
+        # Assign blogs to admin if selected
+        if 'blogs' in request.POST:
+            admin.blogs.set(request.POST.getlist('blogs'))
+        messages.success(request, "Admin successfully created")
+    return redirect('/admins')
 
-# Delete blog
-def delete(request, id):
-    blog = Blog.objects.get(id=id)
-    blog.delete()
-    messages.success(request, "Blog deleted")
-    return redirect('/blogs')
-
-# Create comment for a blog
-def create_comment(request, blog_id):
-    if request.method == "POST":
-        comment_text = request.POST.get('comment', '')
-        if len(comment_text) < 1:
-            messages.error(request, "Comment cannot be empty")
-            return redirect('/blogs')
-        blog = Blog.objects.get(id=blog_id)
-        Comment.objects.create(comment=comment_text, blog=blog)
-        messages.success(request, "Comment added")
-        return redirect('/blogs')
-
-# Delete comment
-def delete_comment(request, comment_id):
-    comment = Comment.objects.get(id=comment_id)
-    comment.delete()
-    messages.success(request, "Comment deleted")
-    return redirect('/blogs')
+# ----------------- Admin List -----------------
+def admin_list(request):
+    admins = Admin.objects.all()
+    blogs = Blog.objects.all()
+    return render(request, 'blogs/admins.html', {'admins': admins, 'blogs': blogs})

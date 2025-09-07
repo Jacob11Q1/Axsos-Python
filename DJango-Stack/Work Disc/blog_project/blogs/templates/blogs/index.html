@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="#">My Blog Site</a>
@@ -17,36 +16,25 @@
 
     <div class="container">
 
-        <!-- Flash Messages -->
+        <!-- Flash messages -->
         {% if messages %}
-        <div class="mb-4">
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
+        {% endfor %}
         {% endif %}
 
-        <!-- Add Blog Form -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Add New Blog</h5>
-                <form action="/blogs/create/" method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <input type="text" class="form-control" name="name" placeholder="Blog Name">
-                    </div>
-                    <div class="mb-3">
-                        <textarea class="form-control" name="desc" placeholder="Blog Description" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Blog</button>
-                </form>
-            </div>
-        </div>
-
         <h1 class="mb-4">All Blogs</h1>
+
+        <!-- Blog creation form -->
+        <form action="{% url 'create_blog' %}" method="POST" class="mb-4">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Blog Name" class="form-control mb-2">
+            <textarea name="desc" placeholder="Blog Description" class="form-control mb-2"></textarea>
+            <button type="submit" class="btn btn-primary">Add Blog</button>
+        </form>
 
         <div class="row row-cols-1 row-cols-md-2 g-4">
             {% for blog in blogs %}
@@ -57,36 +45,29 @@
                         <p class="card-text">{{ blog.desc }}</p>
                     </div>
                     <div class="card-footer bg-light">
-                        <p class="mb-1"><strong>Admins:</strong>
+                        <p><strong>Admins:</strong>
                             {% for admin in blog.admins.all %}
                             {{ admin.first_name }} {{ admin.last_name }}{% if not forloop.last %}, {% endif %}
                             {% empty %}
                             No Admins
                             {% endfor %}
                         </p>
-
-                        <p class="mb-1"><strong>Comments:</strong>
+                        <p><strong>Comments:</strong>
                             {% for comment in blog.comments.all %}
                             <br>- {{ comment.comment }}
-                            <a href="/blogs/comment/delete/{{ comment.id }}/" class="text-danger">x</a>
                             {% empty %}
                             No comments yet.
                             {% endfor %}
                         </p>
+                        <a href="{% url 'edit_blog' blog.id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
+                        <a href="{% url 'delete_blog' blog.id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
 
-                        <!-- Add Comment Form -->
-                        <form action="/blogs/comment/create/{{ blog.id }}/" method="POST" class="mt-2">
+                        <!-- Comment form -->
+                        <form action="{% url 'create_comment' blog.id %}" method="POST" class="mt-2">
                             {% csrf_token %}
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="comment" placeholder="Add comment">
-                                <button class="btn btn-outline-primary" type="submit">Add</button>
-                            </div>
+                            <input type="text" name="comment" placeholder="Add comment" class="form-control mb-2">
+                            <button type="submit" class="btn btn-secondary btn-sm">Add Comment</button>
                         </form>
-
-                        <div class="mt-2">
-                            <a href="/blogs/edit/{{ blog.id }}/" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="/blogs/delete/{{ blog.id }}/" class="btn btn-sm btn-danger">Delete</a>
-                        </div>
                     </div>
                 </div>
             </div>
