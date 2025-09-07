@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ course.name }} - Comments</h2>
+
+<div class="card p-3 mb-3">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <textarea name="content" class="form-control" placeholder="Add a comment" required></textarea>
+        </div>
+        <button class="btn btn-primary">Add Comment</button>
+    </form>
+</div>
+
+<h4>All Comments:</h4>
+{% for comment in comments %}
+<div class="card p-2 mb-2 shadow-sm">
+    <p>{{ comment.content }}</p>
+    <small class="text-muted">{{ comment.created_at }}</small>
+</div>
+{% empty %}
+<p>No comments yet.</p>
+{% endfor %}
+{% endblock %}
