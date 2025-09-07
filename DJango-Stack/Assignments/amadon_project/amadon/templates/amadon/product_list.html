@@ -1,0 +1,38 @@
+{% extends "amadon/base.html" %}
+{% load static %}
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Shop — Amadon</h1>
+<div class="row gy-4">
+    {% for product in products %}
+    <div class="col-md-4">
+        <div class="card product-card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text small text-muted">{{ product.description }}</p>
+                <div class="mt-auto">
+                    <p class="mb-1"><strong>${{ product.price }}</strong></p>
+
+                    <!-- Only product_id and quantity are sent to the server. No price input. -->
+                    <form action="{% url 'amadon:buy' %}" method="post" class="d-flex align-items-center">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <select name="quantity" class="form-select form-select-sm me-2" style="width:80px;">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                        <button class="btn btn-primary btn-sm">Buy</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No products yet. Seed the DB with sample products (see instructions).</p>
+    {% endfor %}
+</div>
+{% endblock %}

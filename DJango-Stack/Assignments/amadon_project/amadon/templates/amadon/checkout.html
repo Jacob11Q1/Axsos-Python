@@ -1,0 +1,30 @@
+{% extends "amadon/base.html" %}
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Checkout / Thank you!</h1>
+
+{% if last_order %}
+<div class="alert alert-success">
+    <strong>Thank you — your order was placed.</strong>
+    <div class="mt-2">
+        <p>Order: <strong>{{ last_order.quantity }} × {{ last_order.product.name }}</strong></p>
+        <p>Unit price: ${{ last_order.price_at_purchase }}</p>
+        <p><strong>Total charged: ${{ last_order.total_price }}</strong></p>
+        <p><small class="text-muted">Order time: {{ last_order.created_at }}</small></p>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">No orders placed yet.</div>
+{% endif %}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Aggregate stats</h5>
+        <p>Total quantity ordered (all orders): <strong>{{ total_quantity }}</strong></p>
+        <p>Total amount charged (all orders): <strong>${{ total_amount }}</strong></p>
+    </div>
+</div>
+
+<a class="btn btn-outline-primary" href="{% url 'amadon:product_list' %}">Back to shop</a>
+{% endblock %}

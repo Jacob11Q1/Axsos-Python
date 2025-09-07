@@ -1,0 +1,35 @@
+/* card hover lift */
+.product-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.product-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* subtle floating animation for the header */
+@keyframes floaty {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+.navbar-brand {
+    animation: floaty 6s ease-in-out infinite;
+}
+
+/* fancy button hover */
+.btn-primary {
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
