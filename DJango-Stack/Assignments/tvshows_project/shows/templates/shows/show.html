@@ -1,0 +1,15 @@
+{% extends 'shows/base.html' %}
+
+{% block title %}{{ show.title }}{% endblock %}
+
+{% block content %}
+<div class="card shadow-lg mb-4">
+    <div class="card-body">
+        <h3 class="card-title text-primary">{{ show.title }}</h3>
+        <h6 class="card-subtitle mb-2 text-muted">{{ show.network }} | Released: {{ show.release_date }}</h6>
+        <p class="card-text">{{ show.description }}</p>
+        <a class="btn btn-warning me-2" href="{% url 'shows:edit' show.id %}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+        <a class="btn btn-secondary" href="{% url 'shows:index' %}"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    </div>
+</div>
+{% endblock %}

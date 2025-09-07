@@ -1,0 +1,31 @@
+{% extends 'shows/base.html' %}
+
+{% block title %}Add New Show{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-center">Add New TV Show</h2>
+
+<form action="{% url 'shows:create' %}" method="post" class="row g-3">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <label class="form-label">Title</label>
+        <input type="text" class="form-control shadow-sm" name="title" required>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Network</label>
+        <input type="text" class="form-control shadow-sm" name="network" required>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Release Date</label>
+        <input type="date" class="form-control shadow-sm" name="release_date" required>
+    </div>
+    <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea class="form-control shadow-sm" name="description" rows="4"></textarea>
+    </div>
+    <div class="col-12 text-center mt-3">
+        <button type="submit" class="btn btn-success btn-lg me-2"><i class="fa-solid fa-plus"></i> Create Show</button>
+        <a class="btn btn-secondary btn-lg" href="{% url 'shows:index' %}"><i class="fa-solid fa-arrow-left"></i> Cancel</a>
+    </div>
+</form>
+{% endblock %}
