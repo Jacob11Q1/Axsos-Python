@@ -2,12 +2,24 @@ from django.db import models
 
 # Create your models here.
 
+# Custom Manager for Blog
+class BlogManager(models.Manager):
+    def basic_validator(self, postData):
+        errors = {}
+        if len(postData.get('name', '')) < 5:
+            errors["name"] = "Blog name should be at least 5 characters"
+        if len(postData.get('desc', '')) < 10:
+            errors["desc"] = "Blog description should be at least 10 characters"
+        return errors
+
 class Blog(models.Model):
     name = models.CharField(max_length=255)
     desc = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
+    objects = BlogManager() # Limking custom manager
+    
     def __str__(self):
         return self.name
 
