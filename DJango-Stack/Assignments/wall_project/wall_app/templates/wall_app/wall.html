@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Wall{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card-login p-4 mb-4">
+        <h3 class="mb-3">Post a Message</h3>
+        <form method="POST" action="{% url 'add_message' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <textarea class="form-control" name="content" rows="3" placeholder="What's on your mind?"></textarea>
+            </div>
+            <button class="btn btn-primary w-100">Post</button>
+        </form>
+    </div>
+
+    <h4 class="mb-3 text-white">Messages</h4>
+    {% for message in messages %}
+    <div class="card mb-3 shadow-sm message-card">
+        <div class="card-header bg-gradient text-white d-flex justify-content-between align-items-center">
+            <span>{{ message.user.username }}</span>
+            <small>{{ message.created_at|date:"M d, Y H:i" }}</small>
+        </div>
+        <div class="card-body">
+            <p>{{ message.content }}</p>
+
+            {% if message.user == request.user and message.can_delete %}
+            <a href="{% url 'delete_message' message.id %}" class="btn btn-danger btn-sm mb-2 delete-message">Delete</a>
+            {% endif %}
+
+            <form method="POST" action="{% url 'add_comment' message.id %}" class="comment-form mb-3">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="comment" class="form-control" placeholder="Add a comment">
+                    <button class="btn btn-secondary btn-sm" type="submit">Comment</button>
+                </div>
+            </form>
+
+            <div class="comments mt-2">
+                {% for comment in message.comments.all %}
+                <div class="p-2 mb-2 bg-light rounded comment-box d-flex justify-content-between align-items-center">
+                    <span><strong>{{ comment.user.username }}:</strong> {{ comment.comment }}</span>
+                    {% if comment.user == request.user %}
+                    <a href="{% url 'delete_comment' comment.id %}" class="text-danger ms-2">x</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+/* Gradient for message headers */
+.bg-gradient {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    border-radius: 0.25rem;
+}
+
+/* Hover effect on message cards */
+.message-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 15px;
+}
+.message-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Comment boxes */
+.comment-box {
+    transition: background 0.2s;
+}
+.comment-box:hover {
+    background: #f1f1f1;
+}
+
+/* Buttons */
+.btn-primary {
+    background: #6a11cb;
+    border: none;
+    transition: background 0.3s;
+}
+.btn-primary:hover {
+    background: #2575fc;
+}
+.btn-secondary {
+    background: #6c757d;
+    border: none;
+    transition: background 0.3s;
+}
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+/* Input focus effect */
+.form-control:focus {
+    border-color: #6a11cb;
+    box-shadow: none;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="card-login position-relative">
+    <h3 class="text-center mb-4">Register</h3>
+    <form method="POST" action="{% url 'register' %}">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <div class="form-floating mb-3">
+            <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="Username">
+            <label for="floatingUsername"><i class="fa fa-user me-2"></i>Username</label>
+        </div>
+
+        <!-- Email -->
+        <div class="form-floating mb-3">
+            <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Email">
+            <label for="floatingEmail"><i class="fa fa-envelope me-2"></i>Email</label>
+        </div>
+
+        <!-- Password -->
+        <div class="form-floating mb-3">
+            <input type="password" name="password1" class="form-control" id="floatingPassword1" placeholder="Password">
+            <label for="floatingPassword1"><i class="fa fa-lock me-2"></i>Password</label>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-floating mb-3">
+            <input type="password" name="password2" class="form-control" id="floatingPassword2" placeholder="Confirm Password">
+            <label for="floatingPassword2"><i class="fa fa-lock me-2"></i>Confirm Password</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+
+        <p class="text-center">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+        </p>
+    </form>
+</div>
+{% endblock %}

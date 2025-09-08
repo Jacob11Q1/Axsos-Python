@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Wall Project{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Body & Background */
+        body {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Card Style */
+        .card-login {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInCard 0.8s forwards;
+        }
+
+        .card-login:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        @keyframes fadeInCard {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Button Style */
+        .btn-primary {
+            background: #6a11cb;
+            border: none;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #2575fc;
+            transform: scale(1.05);
+        }
+
+        /* Floating Input Labels */
+        .form-floating>.form-control:focus~label,
+        .form-floating>.form-control:not(:placeholder-shown)~label {
+            transform: translateY(-1.5rem) scale(0.85);
+            color: #6a11cb;
+        }
+
+        .form-floating label {
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        /* Input focus */
+        .form-control:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.25);
+        }
+
+        /* Input Icon */
+        .input-group-text {
+            background: #6a11cb;
+            border: none;
+            color: #fff;
+        }
+
+        /* Links */
+        .text-center a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .text-center a:hover {
+            color: #2575fc;
+            text-decoration: underline;
+        }
+
+        /* Optional: subtle animated background bubbles */
+        .bg-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bg-bubbles span {
+            position: absolute;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            animation: bubbleAnim 20s linear infinite;
+        }
+
+        @keyframes bubbleAnim {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Optional background bubbles -->
+    <div class="bg-bubbles">
+        <span style="left:10%; width: 50px; height: 50px; animation-duration: 18s;"></span>
+        <span style="left:20%; width: 30px; height: 30px; animation-duration: 22s;"></span>
+        <span style="left:35%; width: 60px; height: 60px; animation-duration: 25s;"></span>
+        <span style="left:50%; width: 40px; height: 40px; animation-duration: 20s;"></span>
+        <span style="left:65%; width: 25px; height: 25px; animation-duration: 30s;"></span>
+        <span style="left:80%; width: 50px; height: 50px; animation-duration: 28s;"></span>
+    </div>
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>
