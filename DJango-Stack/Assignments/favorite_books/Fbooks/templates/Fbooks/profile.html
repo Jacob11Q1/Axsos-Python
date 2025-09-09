@@ -1,0 +1,41 @@
+{% extends "Fbooks/base.html" %}
+{% block title %}{{ user_profile.username }}{% endblock %}
+
+{% block content %}
+<h2>{{ user_profile.username }}'s Profile</h2>
+
+<h4 class="mt-4">Uploaded Books</h4>
+<div class="row">
+    {% for book in uploaded_books %}
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="card-text">{{ book.description|truncatechars:100 }}</p>
+                <p class="text-muted">Likes: {{ book.likes_count }}</p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No books uploaded yet.</p>
+    {% endfor %}
+</div>
+
+<h4 class="mt-4">Liked Books</h4>
+<div class="row">
+    {% for book in liked_books %}
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="card-text">{{ book.description|truncatechars:100 }}</p>
+                <p class="text-muted">Uploaded by <a href="{% url 'profile' book.uploaded_by.username %}">{{
+                        book.uploaded_by.username }}</a></p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No liked books yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

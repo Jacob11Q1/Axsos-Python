@@ -1,0 +1,11 @@
+{% extends "Fbooks/base.html" %}
+{% block title %}Add Book{% endblock %}
+
+{% block content %}
+<h2>Add a New Book</h2>
+<form method="post" class="mt-3">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-success mt-2">Add Book</button>
+</form>
+{% endblock %}
