@@ -1,0 +1,15 @@
+{% extends 'library/base.html' %}
+{% block title %}Home | BookLibrary{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5 py-5">
+    <h1 class="display-4">Welcome to <span class="text-primary">BookLibrary</span>!</h1>
+    <p class="lead">Add, view, and favorite your favorite books with style.</p>
+    {% if user.is_authenticated %}
+    <a href="{% url 'book_list' %}" class="btn btn-lg btn-primary m-2 shadow-sm">Go to Books</a>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-lg btn-success m-2 shadow-sm">Login</a>
+    <a href="{% url 'register' %}" class="btn btn-lg btn-secondary m-2 shadow-sm">Register</a>
+    {% endif %}
+</div>
+{% endblock %}
