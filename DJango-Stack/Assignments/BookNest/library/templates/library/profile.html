@@ -1,0 +1,38 @@
+{% extends 'library/base.html' %}
+{% block title %}Profile | {{ user_profile.username }}{% endblock %}
+{% block content %}
+
+<h2 class="mb-4">{{ user_profile.username }}'s Profile</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Books Uploaded</h4>
+        {% for book in uploaded_books %}
+        <div class="card mb-3 shadow-sm" style="border-radius: 12px;">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="text-muted">{{ book.description|truncatewords:20 }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p>No books uploaded yet.</p>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-6">
+        <h4>Favorite Books</h4>
+        {% for book in liked_books %}
+        <div class="card mb-3 shadow-sm" style="border-radius: 12px;">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="text-muted">Uploaded by: <a href="{% url 'profile' book.uploaded_by.username %}">{{
+                        book.uploaded_by.username }}</a></p>
+            </div>
+        </div>
+        {% empty %}
+        <p>No favorite books yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
