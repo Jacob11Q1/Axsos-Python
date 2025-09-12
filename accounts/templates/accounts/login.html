@@ -1,0 +1,68 @@
+{# login.html - separate login page #}
+{% extends "accounts/base.html" %}
+{% block title %}Login — EnhancedAuth{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <div class="p-3 p-md-4">
+
+            {# messages area #}
+            <div id="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="card ui-card p-4 fade-in">
+                <div class="mb-4 d-flex align-items-center">
+                    <i class="fa-solid fa-right-to-bracket fa-2x me-3" style="color:#60a5fa"></i>
+                    <div>
+                        <h4 class="mb-0 text-white">Login</h4>
+                        <small class="text-muted">Enter your account details</small>
+                    </div>
+                </div>
+
+                {# Login form posts to login view #}
+                <form id="loginForm" method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label text-white small">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark text-white">
+                                <i class="fa-solid fa-envelope"></i>
+                            </span>
+                            <input name="email" type="email" class="form-control" required placeholder="you@example.com">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-white small">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark text-white">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input name="password" type="password" class="form-control" required placeholder="Your password">
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-cta">
+                            <i class="fa-solid fa-right-to-bracket me-2"></i> Login
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-3">
+                    <small class="text-muted">
+                        No account? 
+                        <a href="{% url 'register' %}" class="text-decoration-none fw-semibold" style="color:#60a5fa">
+                            Create one
+                        </a>
+                    </small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

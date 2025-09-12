@@ -1,0 +1,158 @@
+{# register.html - enhanced registration page #}
+{% extends "accounts/base.html" %}
+{% block title %}Register — EnhancedAuth{% endblock %}
+
+{% block content %}
+<div class="row g-4 justify-content-center">
+    {# Left info panel (desktop only) #}
+    <div class="col-md-5 d-none d-md-block fade-in glass-card p-4">
+        <h3 class="text-white">Create your account</h3>
+        <p class="text-light opacity-75">Fast. Secure. Beautiful UI with animations and password hashing.</p>
+
+        <div class="mt-4">
+            <p><i class="fa-solid fa-lock me-2 text-primary"></i> bcrypt-ready hashing</p>
+            <p><i class="fa-solid fa-user-check me-2 text-green-400"></i> Email uniqueness check</p>
+            <p><i class="fa-solid fa-shield-halved me-2 text-red-400"></i> Server-side validation</p>
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm btn-cta hover-glow">
+                <i class="fa-solid fa-arrow-left me-2"></i> Back to login
+            </a>
+        </div>
+    </div>
+
+    {# Right registration form #}
+    <div class="col-md-7 fade-in glass-card p-4">
+        <div id="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} mt-2">{{ message }}</div>
+            {% endfor %}
+        </div>
+
+        <h5 class="mb-3 text-white"><i class="fa-solid fa-user-plus me-2 text-primary"></i> Register</h5>
+        <small class="text-muted">Start your secure account</small>
+
+        <form id="registerForm" method="POST" action="{% url 'register' %}" novalidate>
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label small text-white">First name</label>
+                    <input id="id_first_name" name="first_name" type="text" class="form-control" placeholder="John" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label small text-white">Last name</label>
+                    <input id="id_last_name" name="last_name" type="text" class="form-control" placeholder="Doe" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label small text-white">Email</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                    <input id="id_email" name="email" type="email" class="form-control" placeholder="you@example.com" required>
+                </div>
+                <small id="email-feedback" class="text-danger"></small>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label small text-white">Password</label>
+                    <input id="id_password" name="password" type="password" class="form-control" placeholder="At least 8 chars" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label small text-white">Confirm Password</label>
+                    <input id="id_confirm_password" name="confirm_password" type="password" class="form-control" placeholder="Repeat password" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label small text-white">Birthday (optional)</label>
+                <input id="id_birthday" name="birthday" type="date" class="form-control">
+                <small class="text-light opacity-75">You must be at least 13 years old</small>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-cta hover-glow">
+                    <i class="fa-solid fa-user-plus me-2"></i> Create account
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <small class="text-light opacity-75">Already have an account? <a href="{% url 'login' %}">Login</a></small>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Frosted glass effect */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Fade-in animation */
+    .fade-in {
+        animation: fadeInUp 0.7s ease forwards;
+    }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Button hover glow */
+    .hover-glow:hover {
+        box-shadow: 0 0 15px rgba(96, 165, 250, 0.6);
+        transform: translateY(-2px);
+        transition: 0.3s ease;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function () {
+        // AJAX check for email uniqueness
+        $('#id_email').on('blur', function () {
+            const email = $(this).val().trim();
+            if (!email) { $('#email-feedback').text(''); return; }
+            $.ajax({
+                url: '/check_email/',
+                method: 'GET',
+                data: { email: email },
+                dataType: 'json'
+            }).done(function (data) {
+                $('#email-feedback').text(data.exists ? 'Email already exists' : '');
+            });
+        });
+
+        // Client-side validation before submission
+        $('#registerForm').on('submit', function (e) {
+            let errors = [];
+            const fn = $('#id_first_name').val().trim();
+            const ln = $('#id_last_name').val().trim();
+            const pw = $('#id_password').val();
+            const cpw = $('#id_confirm_password').val();
+
+            if (fn.length < 2 || !/^[A-Za-z]+$/.test(fn)) errors.push('First name must be 2+ letters');
+            if (ln.length < 2 || !/^[A-Za-z]+$/.test(ln)) errors.push('Last name must be 2+ letters');
+            if (pw.length < 8) errors.push('Password must be at least 8 characters');
+            if (pw !== cpw) errors.push('Passwords do not match');
+
+            if (errors.length) {
+                e.preventDefault();
+                let html = '';
+                errors.forEach(err => { html += `<div class="alert alert-danger">${err}</div>`; });
+                $('#messages').html(html);
+                $('html, body').animate({ scrollTop: 0 }, 'fast');
+            }
+        });
+    });
+</script>
+{% endblock %}
