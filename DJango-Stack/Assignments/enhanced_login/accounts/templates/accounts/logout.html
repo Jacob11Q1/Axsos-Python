@@ -1,0 +1,60 @@
+{# logout.html - enhanced logout page #}
+{% extends "accounts/base.html" %}
+{% block title %}Logged Out — EnhancedAuth{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="p-4 text-center fade-in glass-card">
+            <i class="fa-solid fa-circle-check fa-3x mb-3" style="color:#86efac"></i>
+            <h4 class="mb-1 text-white">You have been logged out</h4>
+            <p class="text-light opacity-75 mb-3">
+                Thank you for using <strong>EnhancedAuth</strong>. See you soon!
+            </p>
+
+            <div class="d-grid gap-2">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-cta hover-glow">
+                    <i class="fa-solid fa-right-to-bracket me-2"></i> Login again
+                </a>
+                <a href="{% url 'register' %}" class="btn btn-outline-light hover-glow">
+                    <i class="fa-solid fa-user-plus me-2"></i> Create new account
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Frosted glass effect */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Fade-in animation */
+    .fade-in {
+        animation: fadeInUp 0.7s ease forwards;
+    }
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Button hover glow */
+    .hover-glow:hover {
+        box-shadow: 0 0 15px rgba(96, 165, 250, 0.6);
+        transform: translateY(-2px);
+        transition: 0.3s ease;
+    }
+</style>
+{% endblock %}

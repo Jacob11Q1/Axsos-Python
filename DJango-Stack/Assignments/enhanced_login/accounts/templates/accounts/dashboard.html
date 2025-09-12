@@ -1,0 +1,147 @@
+{# dashboard.html - fully enhanced welcome page #}
+{% extends "accounts/base.html" %}
+{% block title %}Dashboard — EnhancedAuth{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="p-4">
+
+            {# ========================= WELCOME / PROFILE CARD ========================= #}
+            <div class="card ui-card p-4 mb-4 fade-in">
+                <div class="d-flex align-items-center">
+                    {# Avatar with fallback initials #}
+                    <div class="me-3">
+                        {% if user.profile_image %}
+                            <img src="{{ user.profile_image.url }}" class="rounded-circle border" 
+                                 style="width:64px; height:64px; object-fit:cover;">
+                        {% else %}
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                 style="width:64px; height:64px; background:#1e293b; color:#fff; font-weight:600;">
+                                {{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <h4 class="mb-0 text-white">Welcome, {{ user.first_name }} {{ user.last_name }}</h4>
+                        <small class="text-light opacity-75">Logged in as <strong>{{ user.email }}</strong></small>
+                    </div>
+                </div>
+
+                <hr class="border-light">
+
+                <div class="row text-light">
+                    <div class="col-md-6">
+                        <p class="mb-1"><i class="fa-solid fa-calendar-days me-2"></i> Account created: {{ user.created_at|date:"M d, Y" }}</p>
+                        {% if user.birthday %}
+                        <p class="mb-1"><i class="fa-solid fa-cake-candles me-2"></i> Birthday: {{ user.birthday }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1"><i class="fa-solid fa-clock-rotate-left me-2"></i> Last login: {{ user.last_login|date:"M d, Y H:i" }}</p>
+                        <p class="mb-1"><i class="fa-solid fa-shield-check me-2"></i> Status: <span class="text-success">Active</span></p>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4 flex-wrap">
+                    <a href="{% url 'logout' %}" class="btn btn-danger btn-cta hover-glow">
+                        <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-cta hover-glow">
+                        <i class="fa-solid fa-user-gear me-2"></i> Settings
+                    </a>
+                    <a href="#" class="btn btn-outline-info btn-cta hover-glow">
+                        <i class="fa-solid fa-shield-halved me-2"></i> Security
+                    </a>
+                </div>
+            </div>
+
+            {# ========================= QUICK STATS ROW ========================= #}
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="card ui-card p-3 text-center fade-in hover-glow">
+                        <i class="fa-solid fa-fingerprint fa-2x mb-2" style="color:#facc15"></i>
+                        <h6 class="text-white">Last Login</h6>
+                        <small class="text-light opacity-75">{{ user.last_login|date:"M d, Y" }}</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card ui-card p-3 text-center fade-in hover-glow">
+                        <i class="fa-solid fa-lock fa-2x mb-2" style="color:#3b82f6"></i>
+                        <h6 class="text-white">2FA</h6>
+                        <small class="text-light opacity-75">Not Enabled</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card ui-card p-3 text-center fade-in hover-glow">
+                        <i class="fa-solid fa-key fa-2x mb-2" style="color:#10b981"></i>
+                        <h6 class="text-white">Password Updated</h6>
+                        <small class="text-light opacity-75">3 months ago</small>
+                    </div>
+                </div>
+            </div>
+
+            {# ========================= PROFILE COMPLETION / SECURITY ========================= #}
+            <div class="card ui-card p-4 mb-4 fade-in hover-glow">
+                <h5 class="mb-3 text-white"><i class="fa-solid fa-user-check me-2"></i> Profile Status</h5>
+                <p class="mb-2 text-light">Profile completion: <span class="fw-bold">70%</span></p>
+                <div class="progress mb-3" style="height: 8px;">
+                    <div class="progress-bar bg-success" style="width: 70%;"></div>
+                </div>
+                <p class="mb-1 text-light"><i class="fa-solid fa-shield-halved me-2"></i> Security: <span class="text-warning">Medium</span></p>
+                <small class="text-muted">Tip: Enable 2FA to increase your security rating.</small>
+            </div>
+
+            {# ========================= RECENT ACTIVITY FEED ========================= #}
+            <div class="card ui-card p-4 fade-in hover-glow">
+                <h5 class="mb-3 text-white"><i class="fa-solid fa-bell me-2"></i> Recent Activity</h5>
+                <ul class="list-unstyled mb-0 text-light">
+                    <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i> Logged in from Chrome · Today</li>
+                    <li class="mb-2"><i class="fa-solid fa-key text-warning me-2"></i> Changed password · Last week</li>
+                    <li class="mb-2"><i class="fa-solid fa-envelope text-info me-2"></i> Verified email · 2 months ago</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Frosted glass card effect + hover */
+.ui-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 1rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.ui-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+
+/* Hover glow effect for buttons/cards */
+.hover-glow:hover {
+    box-shadow: 0 0 15px rgba(96,165,250,0.6);
+    transform: translateY(-2px);
+    transition: 0.3s ease;
+}
+
+/* Fade-in animation */
+.fade-in {
+    animation: fadeInUp 0.7s ease forwards;
+}
+@keyframes fadeInUp {
+    from { opacity:0; transform: translateY(20px); }
+    to { opacity:1; transform: translateY(0); }
+}
+
+/* Small adjustments for responsive avatars */
+@media (max-width:576px) {
+    .ui-card img, .ui-card div.rounded-circle { width:48px; height:48px; font-size:0.85rem; }
+}
+</style>
+{% endblock %}
