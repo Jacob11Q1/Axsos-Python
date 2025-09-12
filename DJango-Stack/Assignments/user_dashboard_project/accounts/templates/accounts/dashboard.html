@@ -1,0 +1,82 @@
+{% extends "accounts/base.html" %}
+{% block title %}Dashboard — {{ user.username }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* small inline helper styles (main styling in styles.css) */
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-0">Hello, {{ user.first_name|default:user.username }} 👋</h2>
+        <p class="text-muted small mb-0">Here's a snapshot of your workspace.</p>
+    </div>
+    <div class="text-end">
+        <a class="btn btn-outline-secondary me-2">Upgrade</a>
+        <a class="btn btn-primary">New Project</a>
+    </div>
+</div>
+
+<!-- Info cards row -->
+<div class="row g-3 mb-4">
+    {% for card in cards %}
+    <div class="col-sm-6 col-md-4">
+        <div class="card hover-card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="text-uppercase small mb-1">{{ card.title }}</h6>
+                        <h3 class="mb-0">{{ card.value }}</h3>
+                        <p class="small text-muted mt-2 mb-0">{{ card.desc }}</p>
+                    </div>
+                    <div class="icon-circle">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L12 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Example of a bigger card with subtle animation -->
+<div class="card shadow-sm border-0 mb-4 p-3">
+    <div class="row g-3 align-items-center">
+        <div class="col-md-8">
+            <h5 class="mb-1">Weekly activity</h5>
+            <p class="small text-muted mb-0">A short summary of actions across your projects.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a class="btn btn-sm btn-outline-primary">View report</a>
+        </div>
+    </div>
+</div>
+
+<!-- table / list example -->
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h6 class="card-subtitle mb-3 text-muted">Recent tasks</h6>
+        <div class="list-group">
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>Fix inventory sync</strong>
+                    <div class="small text-muted">Due in 2 days • Assigned to you</div>
+                </div>
+                <div class="badge bg-secondary rounded-pill">In progress</div>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>Design landing page</strong>
+                    <div class="small text-muted">Due in 6 days • UI team</div>
+                </div>
+                <div class="badge bg-success rounded-pill">Done</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

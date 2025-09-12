@@ -1,0 +1,74 @@
+/* global fonts & utilities */
+body {
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    /* subtle gradient */
+}
+
+/* card hover effect used for SaaS look */
+.hover-card {
+    transition: transform 220ms cubic-bezier(.2, .9, .2, 1), box-shadow 220ms ease;
+    transform-origin: center;
+    border-radius: 12px;
+}
+
+.hover-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    /* lift on hover */
+    box-shadow: 0 10px 30px rgba(20, 30, 60, 0.08);
+}
+
+/* icon circle on cards */
+.icon-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.08));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6366f1;
+    /* indigo tint */
+}
+
+/* subtle animations for headers */
+h2 {
+    animation: slideUp .6s ease both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* buttons - make primary elevated */
+.btn-primary {
+    border-radius: 10px;
+    padding-left: 18px;
+    padding-right: 18px;
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.12);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+/* small responsive tweaks */
+@media (max-width: 576px) {
+    .icon-circle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .navbar-brand strong {
+        font-size: 14px;
+    }
+}

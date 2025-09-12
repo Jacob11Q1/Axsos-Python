@@ -1,0 +1,28 @@
+{% extends "accounts/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Register — User Dashboard{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h3 class="card-title mb-3">Create your account</h3>
+                <p class="text-muted mb-4">Start your free dashboard trial — set up in seconds.</p>
+
+                <!-- registration form -->
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {{ form|crispy }} <!-- crispy renders form with Bootstrap styles -->
+                    <div class="d-grid">
+                        <button class="btn btn-primary btn-lg">Create account</button>
+                    </div>
+                </form>
+
+                <p class="small text-center mt-3">Already have an account? <a
+                        href="{% url 'accounts:login' %}">Login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
