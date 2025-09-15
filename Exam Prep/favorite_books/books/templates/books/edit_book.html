@@ -1,0 +1,22 @@
+{% extends 'books/base.html' %}
+{% block title %}Edit Book{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card hover-card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4>Edit Book</h4>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'edit_book' book.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="title" value="{{ book.title }}" class="form-control mb-2" required>
+                    <textarea name="desc" class="form-control mb-2" required>{{ book.desc }}</textarea>
+                    <button class="btn btn-info w-100">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

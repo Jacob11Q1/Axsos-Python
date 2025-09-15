@@ -1,0 +1,40 @@
+{% extends 'books/base.html' %}
+{% block title %}Login / Register{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 mb-4">
+        <div class="card hover-card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h4>Login</h4>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Email" class="form-control mb-2" required>
+                    <input type="password" name="password" placeholder="Password" class="form-control mb-2" required>
+                    <button class="btn btn-success w-100">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5 mb-4">
+        <div class="card hover-card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4>Register</h4>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'register' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="name" placeholder="Name" class="form-control mb-2" required>
+                    <input type="email" name="email" placeholder="Email" class="form-control mb-2" required>
+                    <input type="password" name="password" placeholder="Password" class="form-control mb-2" required>
+                    <input type="password" name="confirm" placeholder="Confirm Password" class="form-control mb-2"
+                        required>
+                    <button class="btn btn-primary w-100">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
